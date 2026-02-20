@@ -1,14 +1,14 @@
 # service-no-forbidden-word
 
-A Buf check plugin that enforces service names do not contain forbidden words (e.g. `Service`). Useful when you require services to end with `API` instead of `Service` and want to prevent names like `TxtServiceAPI`.
+A Buf check plugin that enforces service names do not contain any of a user-defined list of forbidden words. You configure which words to forbid based on your naming conventions.
 
 ## Rule: SERVICE_NO_FORBIDDEN_WORD
 
-Checks that Protobuf service names do not contain any of the configured forbidden words. Matching is case-insensitive.
+Checks that Protobuf service names do not contain any of the configured forbidden words. Matching is case-insensitive. If `forbidden_words` is not specified or empty, the rule does nothing.
 
 ## Usage
 
-Add the plugin to your `buf.yaml`:
+Add the plugin to your `buf.yaml` and configure the words you want to forbid:
 
 ```yaml
 version: v2
@@ -18,12 +18,12 @@ lint:
   use:
     - STANDARD
     - SERVICE_NO_FORBIDDEN_WORD
-  service_suffix: API  # Require API suffix
 plugins:
   - plugin: buf.build/pcelvng/service-no-forbidden-word
     options:
       forbidden_words:
-        - Service
+        - Service   # Forbid "Service" (e.g. when requiring "API" suffix)
+        # Add any other words for your use case
 ```
 
 Then run `buf plugin update` to pin the version, and `buf lint` to check your schemas.
@@ -32,9 +32,27 @@ Then run `buf plugin update` to pin the version, and `buf lint` to check your sc
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `forbidden_words` | `[]string` | `["Service"]` | List of words that must not appear in service names |
+| `forbidden_words` | `[]string` | none | List of words that must not appear in service names. Required for the rule to have any effect. |
+
+## Example use cases
+
+**Require "API" suffix instead of "Service":**
+```yaml
+forbidden_words:
+  - Service
+```
+
+**Forbid multiple words:**
+```yaml
+forbidden_words:
+  - Service
+  - Endpoint
+  - Handler
+```
 
 ## Examples
+
+With `forbidden_words: [Service]`:
 
 ```bash
 # Passes (no forbidden words)

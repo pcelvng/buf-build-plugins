@@ -24,15 +24,12 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
-const (
-	forbiddenWordOptionKey = "forbidden_words"
-	defaultForbiddenWord   = "Service"
-)
+const forbiddenWordOptionKey = "forbidden_words"
 
 var serviceNoForbiddenWordRuleSpec = &check.RuleSpec{
 	ID:      "SERVICE_NO_FORBIDDEN_WORD",
 	Default: true,
-	Purpose: "Checks that service names do not contain forbidden words (e.g. 'Service').",
+	Purpose: "Checks that service names do not contain any of the configured forbidden words.",
 	Type:    check.RuleTypeLint,
 	Handler: checkutil.NewServiceRuleHandler(checkServiceNoForbiddenWord, checkutil.WithoutImports()),
 }
@@ -57,7 +54,7 @@ func checkServiceNoForbiddenWord(
 		return err
 	}
 	if len(forbiddenWords) == 0 {
-		forbiddenWords = []string{defaultForbiddenWord}
+		return nil
 	}
 
 	for _, word := range forbiddenWords {
