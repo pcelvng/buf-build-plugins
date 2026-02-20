@@ -46,7 +46,14 @@ service TxtServiceAPI {}
 
 ## Publishing to BSR
 
-From the plugin directory:
+From the repo root:
+
+```bash
+make build
+make push
+```
+
+Or from this directory:
 
 ```bash
 # Build WASM binary (required for BSR)

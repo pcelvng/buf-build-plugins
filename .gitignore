@@ -28,8 +28,8 @@ go.work.sum
 .env
 
 # Plugin binaries
-service-no-forbidden-word/buf-plugin-service-no-forbidden-word
-service-no-forbidden-word/*.wasm
+plugins/*/buf-plugin-*
+plugins/*/*.wasm
 
 # Editor/IDE
 # .idea/

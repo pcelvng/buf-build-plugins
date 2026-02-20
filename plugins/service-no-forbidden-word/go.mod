@@ -1,4 +1,4 @@
-module github.com/pcelvng/buf-build-plugins/service-no-forbidden-word
+module github.com/pcelvng/buf-build-plugins/plugins/service-no-forbidden-word
 
 go 1.23.0
 

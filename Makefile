@@ -1,22 +1,23 @@
-.PHONY: build push help
+.PHONY: build push help tidy
 
 # BSR organization - update this for your BSR account
 BSR_ORG ?= pcelvng
+PLUGIN_DIR := plugins/service-no-forbidden-word
 PLUGIN_NAME := service-no-forbidden-word
 
 help:
 	@echo "Targets:"
-	@echo "  build    - Build the plugin (native + WASM)"
+	@echo "  build    - Build the service-no-forbidden-word plugin (native + WASM)"
 	@echo "  push     - Push plugin to BSR (default BSR_ORG=pcelvng)"
-	@echo "  tidy     - Run go mod tidy in plugin directories"
+	@echo "  tidy     - Run go mod tidy in all plugin directories"
 
 build:
-	cd $(PLUGIN_NAME) && go build -o buf-plugin-$(PLUGIN_NAME) ./cmd/buf-plugin-$(PLUGIN_NAME)
-	cd $(PLUGIN_NAME) && GOOS=wasip1 GOARCH=wasm go build -o $(PLUGIN_NAME).wasm ./cmd/buf-plugin-$(PLUGIN_NAME)
-	@echo "Built: $(PLUGIN_NAME)/buf-plugin-$(PLUGIN_NAME) (native) and $(PLUGIN_NAME)/$(PLUGIN_NAME).wasm (WASM)"
+	cd $(PLUGIN_DIR) && go build -o buf-plugin-$(PLUGIN_NAME) ./cmd/buf-plugin-$(PLUGIN_NAME)
+	cd $(PLUGIN_DIR) && GOOS=wasip1 GOARCH=wasm go build -o $(PLUGIN_NAME).wasm ./cmd/buf-plugin-$(PLUGIN_NAME)
+	@echo "Built: $(PLUGIN_DIR)/buf-plugin-$(PLUGIN_NAME) (native) and $(PLUGIN_DIR)/$(PLUGIN_NAME).wasm (WASM)"
 
 push: build
-	cd $(PLUGIN_NAME) && buf plugin push buf.build/$(BSR_ORG)/$(PLUGIN_NAME) \
+	cd $(PLUGIN_DIR) && buf plugin push buf.build/$(BSR_ORG)/$(PLUGIN_NAME) \
 		--binary=$(PLUGIN_NAME).wasm \
 		--create \
 		--create-type=check \
@@ -24,4 +25,4 @@ push: build
 		--source-control-url=https://github.com/$(BSR_ORG)/buf-build-plugins
 
 tidy:
-	cd $(PLUGIN_NAME) && go mod tidy
+	cd $(PLUGIN_DIR) && go mod tidy
