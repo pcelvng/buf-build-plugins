@@ -1,4 +1,4 @@
-.PHONY: build login push help tidy
+.PHONY: build login push push-version help tidy
 
 # BSR organization - update this for your BSR account
 BSR_ORG ?= pcelvng
@@ -7,10 +7,11 @@ PLUGIN_NAME := service-disallowed-naming
 
 help:
 	@echo "Targets:"
-	@echo "  build    - Build the service-disallowed-naming plugin (native + WASM)"
-	@echo "  login    - Log in to BSR (opens browser to authenticate)"
-	@echo "  push     - Push plugin to BSR (default BSR_ORG=pcelvng)"
-	@echo "  tidy     - Run go mod tidy in all plugin directories"
+	@echo "  build         - Build the service-disallowed-naming plugin (native + WASM)"
+	@echo "  login         - Log in to BSR (opens browser to authenticate)"
+	@echo "  push          - Push plugin to BSR (default BSR_ORG=pcelvng)"
+	@echo "  push-version  - Push plugin with version label (use: make push-version VERSION=v0.1.0)"
+	@echo "  tidy          - Run go mod tidy in all plugin directories"
 
 login:
 	buf registry login
@@ -27,6 +28,13 @@ push: build
 		--create-type=check \
 		--create-visibility=public \
 		--source-control-url=https://github.com/$(BSR_ORG)/buf-build-plugins
+
+push-version: build
+	@if [ -z "$(VERSION)" ]; then echo "Usage: make push-version VERSION=v0.1.0"; exit 1; fi
+	cd $(PLUGIN_DIR) && buf plugin push buf.build/$(BSR_ORG)/$(PLUGIN_NAME) \
+		--binary=$(PLUGIN_NAME).wasm \
+		--label=$(VERSION) \
+		--source-control-url=https://github.com/$(BSR_ORG)/buf-build-plugins/releases/tag/$(VERSION)
 
 tidy:
 	cd $(PLUGIN_DIR) && go mod tidy
