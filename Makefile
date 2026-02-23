@@ -4,13 +4,14 @@
 BSR_ORG ?= pcelvng
 PLUGIN_DIR := plugins/service-disallowed-naming
 PLUGIN_NAME := service-disallowed-naming
+VERSION ?= v0.1.0
 
 help:
 	@echo "Targets:"
 	@echo "  build         - Build the service-disallowed-naming plugin (native + WASM)"
 	@echo "  login         - Log in to BSR (opens browser to authenticate)"
 	@echo "  push          - Push plugin to BSR (default BSR_ORG=pcelvng)"
-	@echo "  push-version  - Push plugin with version label (use: make push-version VERSION=v0.1.0)"
+	@echo "  push-version  - Push plugin with version label (VERSION=$(VERSION), override with VERSION=x.y.z)"
 	@echo "  tidy          - Run go mod tidy in all plugin directories"
 
 login:
