@@ -26,21 +26,21 @@ import (
 
 const forbiddenWordOptionKey = "forbidden_words"
 
-var serviceNoForbiddenWordRuleSpec = &check.RuleSpec{
-	ID:      "SERVICE_NO_FORBIDDEN_WORD",
+var serviceDisallowedNamingRuleSpec = &check.RuleSpec{
+	ID:      "SERVICE_DISALLOWED_NAMING",
 	Default: true,
-	Purpose: "Checks that service names do not contain any of the configured forbidden words.",
+	Purpose: "Checks that service names do not contain any of the configured disallowed words.",
 	Type:    check.RuleTypeLint,
-	Handler: checkutil.NewServiceRuleHandler(checkServiceNoForbiddenWord, checkutil.WithoutImports()),
+	Handler: checkutil.NewServiceRuleHandler(checkServiceDisallowedNaming, checkutil.WithoutImports()),
 }
 
 func main() {
 	check.Main(&check.Spec{
-		Rules: []*check.RuleSpec{serviceNoForbiddenWordRuleSpec},
+		Rules: []*check.RuleSpec{serviceDisallowedNamingRuleSpec},
 	})
 }
 
-func checkServiceNoForbiddenWord(
+func checkServiceDisallowedNaming(
 	_ context.Context,
 	responseWriter check.ResponseWriter,
 	request check.Request,

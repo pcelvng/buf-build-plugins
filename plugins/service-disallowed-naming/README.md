@@ -1,14 +1,14 @@
-# service-no-forbidden-word
+# service-disallowed-naming
 
-A Buf check plugin that enforces service names do not contain any of a user-defined list of forbidden words. You configure which words to forbid based on your naming conventions.
+A Buf check plugin that enforces service names do not contain any of a user-defined list of disallowed words. Requires at least one configured disallowed word. You specify which words are not allowed based on your naming conventions.
 
-## Rule: SERVICE_NO_FORBIDDEN_WORD
+## Rule: SERVICE_DISALLOWED_NAMING
 
-Checks that Protobuf service names do not contain any of the configured forbidden words. Matching is case-insensitive. If `forbidden_words` is not specified or empty, the rule does nothing.
+Checks that service names do not contain any of the configured disallowed words. Matching is case-insensitive. If `forbidden_words` is not specified or empty, the rule does nothing.
 
 ## Usage
 
-Add the plugin to your `buf.yaml` and configure the words you want to forbid:
+Add the plugin to your `buf.yaml` and configure the words you want to disallow:
 
 ```yaml
 version: v2
@@ -17,12 +17,12 @@ modules:
 lint:
   use:
     - STANDARD
-    - SERVICE_NO_FORBIDDEN_WORD
+    - SERVICE_DISALLOWED_NAMING
 plugins:
-  - plugin: buf.build/pcelvng/service-no-forbidden-word
+  - plugin: buf.build/pcelvng/service-disallowed-naming
     options:
       forbidden_words:
-        - Service   # Forbid "Service" (e.g. when requiring "API" suffix)
+        - Service   # Disallow "Service" (e.g. when requiring "API" suffix)
         # Add any other words for your use case
 ```
 
@@ -42,7 +42,7 @@ forbidden_words:
   - Service
 ```
 
-**Forbid multiple words:**
+**Disallow multiple words:**
 ```yaml
 forbidden_words:
   - Service
@@ -55,7 +55,7 @@ forbidden_words:
 With `forbidden_words: [Service]`:
 
 ```bash
-# Passes (no forbidden words)
+# Passes (no disallowed words)
 service TxtAPI {}
 
 # Fails (contains "Service")
@@ -75,11 +75,11 @@ Or from this directory:
 
 ```bash
 # Build WASM binary (required for BSR)
-GOOS=wasip1 GOARCH=wasm go build -o service-no-forbidden-word.wasm ./cmd/buf-plugin-service-no-forbidden-word
+GOOS=wasip1 GOARCH=wasm go build -o service-disallowed-naming.wasm ./cmd/buf-plugin-service-disallowed-naming
 
 # Push to BSR
-buf plugin push buf.build/pcelvng/service-no-forbidden-word \
-  --binary=service-no-forbidden-word.wasm \
+buf plugin push buf.build/pcelvng/service-disallowed-naming \
+  --binary=service-disallowed-naming.wasm \
   --create \
   --create-type=check \
   --create-visibility=public

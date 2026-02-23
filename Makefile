@@ -2,12 +2,12 @@
 
 # BSR organization - update this for your BSR account
 BSR_ORG ?= pcelvng
-PLUGIN_DIR := plugins/service-no-forbidden-word
-PLUGIN_NAME := service-no-forbidden-word
+PLUGIN_DIR := plugins/service-disallowed-naming
+PLUGIN_NAME := service-disallowed-naming
 
 help:
 	@echo "Targets:"
-	@echo "  build    - Build the service-no-forbidden-word plugin (native + WASM)"
+	@echo "  build    - Build the service-disallowed-naming plugin (native + WASM)"
 	@echo "  push     - Push plugin to BSR (default BSR_ORG=pcelvng)"
 	@echo "  tidy     - Run go mod tidy in all plugin directories"
 

@@ -4,12 +4,12 @@ Custom public plugins for the Buf Schema Registry (BSR) ecosystem.
 
 ## Plugins
 
-### service-no-forbidden-word
+### service-disallowed-naming
 
-Enforces that Protobuf service names do not contain any of a user-defined list of forbidden words. Configure `forbidden_words` for your naming conventions (e.g. forbid "Service" when requiring "API" suffix).
+Enforces that service names do not contain any of a user-defined list of disallowed words. Requires at least one configured disallowed word. Configure `forbidden_words` for your naming conventions (e.g. disallow "Service" when requiring "API" suffix).
 
-- [Documentation](plugins/service-no-forbidden-word/README.md)
-- BSR: `buf.build/pcelvng/service-no-forbidden-word`
+- [Documentation](plugins/service-disallowed-naming/README.md)
+- BSR: `buf.build/pcelvng/service-disallowed-naming`
 
 ## Building & Publishing
 
