@@ -1,4 +1,4 @@
-.PHONY: build push help tidy
+.PHONY: build login push help tidy
 
 # BSR organization - update this for your BSR account
 BSR_ORG ?= pcelvng
@@ -8,8 +8,12 @@ PLUGIN_NAME := service-disallowed-naming
 help:
 	@echo "Targets:"
 	@echo "  build    - Build the service-disallowed-naming plugin (native + WASM)"
+	@echo "  login    - Log in to BSR (opens browser to authenticate)"
 	@echo "  push     - Push plugin to BSR (default BSR_ORG=pcelvng)"
 	@echo "  tidy     - Run go mod tidy in all plugin directories"
+
+login:
+	buf registry login
 
 build:
 	cd $(PLUGIN_DIR) && go build -o buf-plugin-$(PLUGIN_NAME) ./cmd/buf-plugin-$(PLUGIN_NAME)
